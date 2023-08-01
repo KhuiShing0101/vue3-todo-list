@@ -10,14 +10,12 @@
           <input type="text" class="form-control" v-model="newTask" @keyup.enter="addNew()"/>
         </div>
 
-        <div class="col">
-          <button @click="addNew">
+        <div class="col ">
+          <button class="btn btn-primary m-1" @click="addNew">
             Add New
           </button>
-        </div>
 
-        <div class="col">
-          <button @click="deleteTask">
+          <button class="btn btn-warning m-2" @click="deleteTask">
             Delete Task
           </button>
         </div>
