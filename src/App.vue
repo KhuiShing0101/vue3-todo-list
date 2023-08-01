@@ -1,7 +1,7 @@
 <template>
-  <div class="App">
+  <div class="App" id="App">
     <h1 class="text-center bg-primary text-white p-3">
-      {{ title }}'sTodo Lists
+      {{ title }}'s Todo Lists
     </h1>
     <div class="container">
       <div class="row py-3">
@@ -13,6 +13,12 @@
         <div class="col">
           <button @click="addNew">
             Add New
+          </button>
+        </div>
+
+        <div class="col">
+          <button @click="deleteTask">
+            Delete Task
           </button>
         </div>
 
@@ -36,20 +42,22 @@
       <div class="alert alert-warning text-center mb-3 mt-3" 
       v-else >There is no data</div>
 
-      <div col="row">
-        <div class="bg-danger text-center text-white p-3 row mt-3">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="hideCompleteTask">
-            <label class="form-check-label" for="flexSwitchCheckDefault">hide completed tasks</label>
-          </div>
+    <div class="col">
+      <div class="bg-danger text-white p-3 mt-3 d-flex align-items-center">
+        <label class="form-check-label m-0" for="flexSwitchCheckDefault" style="flex: 1; text-align: center; font-size: large;">hide completed tasks</label>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="hideCompleteTask">
         </div>
       </div>
+    </div>
+
 
     </div>
   </div>
 </template>
 
 <script>
+
   export default{
     name: "App",
     data: () => ({
@@ -59,12 +67,13 @@
       tasks:[
       ],
     }),
+
     computed:{
       filterTask() {
-        return this.hideCompleteTask ? this.tasks.filter(v => !v.done):
-        this.tasks;
+        return this.hideCompleteTask ? this.tasks.filter(v => !v.done): this.tasks;
       }
     },
+
     methods: {
       addNew(){
         if(this.newTask === ''){
@@ -74,9 +83,26 @@
         action:this.newTask,
         done:false,
        }),
+
+       this.store();
        this.newTask =''
+      },
+
+      deleteTask(){
+        this.tasks = this.tasks.filter((val)=>!val.done);
+        this.store();
+      },
+      store(){
+        localStorage.setItem("myLocalStorage",JSON.stringify(this.tasks))
       }
     },
+    mounted(){
+      let data = localStorage.getItem("myLocalStorage")
+      if(data !== null){
+        this.tasks = JSON.parse(data);
+      }
+    }
+
   }
 </script>
 
